@@ -83,16 +83,116 @@ public T SomeMethod<T>(int someNumber, bool isValid)
 
 
 
+----------------------------- COURSE ------------------------------
+Set up Web API
+
+> dotnet new webapi
+> 
+> dotnet watch run
+> 
+> dotnet new gitignore
+> 
+> Coming up:
+> 
+>     New controller & Models
+> 
+>     Asynchronous implementations with async/await
+> 
+>     Data Transfer Onjects DTOs
+> 
+>     Best practices
+> 
+>     MVC pattern
+> 
+> AddScoped SingleTon Transient
+
+global using DotNet.Models; trong controller (note first line) or put it in first line in program.cs
+
+RESTFul web service calls
+
+`dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection`
+
+program.cs
+
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+> trong CharacterService
+> 
+>   private readonly IMapper _mapper;
+> 
+>         public CharacterService(IMapper mapper)
+> 
+>         {
+> 
+>             _mapper = mapper;
+> 
+>         }
+
+Persistence with Entity Framework Core
+
+Code First Migration
+
+SQL Server
+
+Relationships 1 - 1, 1 - n, n - n
 
 
+```
+dotnet add package Microsoft.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Design
 
+dotnet tool install --global dotnet-ef
+dotnet-ef
+```
+##### Implement Data Context
+*** new Folder Data --> New class DataContext
+```
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
+namespace DotNet.Data
+{
+    public class DataContext : DbContext
+    {
+        public DataContext(DbContextOptions options) : base(options){ }
+        public DbSet<Character> Characters => Set<Character>();
+    }
+}
+```
+*** New Connection String in appsetting.json
 
+```
+"ConnectionStrings": {
+    "DefaultConnetionString": "Server=localhost;Database=CharacterDb;integrated security=True;MultipleActiveResultSets=True;TrustServerCertificate=True"
+  }
+  ```
+*** Add DbContext in Program.cs file (note in once line)
+```
+builder.Services.AddDbContext<ContactsAPIDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ContactAPIConnetionString")));
 
+```
 
+*** Add Migrations
+```
+ dotnet ef migrations add InitTableCharacter
+```
 
+*** Update Database
+```
+dotnet ef database update
+```
 
-
+*** In CharacterService add 
+```
+public CharacterService(IMapper mapper, DataContext context)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
+```
 
 
 
