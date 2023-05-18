@@ -6,31 +6,31 @@
  ```Any of the guidance pertaining to elements marked public is also applicable when working with protected and protected internal elements. Use pascal casing ("PascalCasing") when naming a class, record, or struct ```
  
 ##### Use pascal casing ("PascalCasing") when naming a class, record, or struct.
-```
+```cs
 public class DataService
 {
 }
 ```
-```
+```cs
 public record PhysicalAddress(
     string Street,
     string City,
     string StateOrProvince,
     string ZipCode);
 ```
-```
+```cs
 public struct ValueCoordinate
 {
 }
 ```
 ##### When naming an interface, use pascal casing in addition to prefixing the name with an I. This clearly indicates to consumers that it's an interface.
-```
+```cs
 public interface IWorkerQueue
 {
 }
 ```
 ###### When naming public members of types, such as fields, properties, events, methods, and local functions, use pascal casing.
-```
+```cs
 public class ExampleEvents
 {
     // A public field, these should be used sparingly
@@ -53,14 +53,14 @@ public class ExampleEvents
 ```
 
 ##### Camel case Use camel casing ("camelCasing") when naming private or internal fields, and prefix them with _.
-```
+```cs
 public class DataService
 {
     private IWorkerQueue _workerQueue;
 }
 ```
 ##### Using naming when this is ``static`` of ``private`` or ``internal``, When working with static fields that are private or internal, use the ``s_`` prefix and for thread static use ```t_```.
-```
+```cs
 public class DataService
 {
     private static IWorkerQueue s_workerQueue;
@@ -70,7 +70,7 @@ public class DataService
 }
 ```
 ##### When writing method parameters, use camel casing.
-```
+```cs
 public T SomeMethod<T>(int someNumber, bool isValid)
 {
 }
@@ -137,7 +137,7 @@ SQL Server
 Relationships 1 - 1, 1 - n, n - n
 
 
-```
+```cs
 dotnet add package Microsoft.EntityFrameworkCore
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -147,7 +147,7 @@ dotnet-ef
 ```
 ##### Implement Data Context
 *** new Folder Data --> New class DataContext
-```
+```cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -164,7 +164,7 @@ namespace DotNet.Data
 ```
 *** New Connection String in appsetting.json
 
-```
+```cs
 "ConnectionStrings": {
     "DefaultConnetionString": "Server=localhost;Database=CharacterDb;integrated security=True;MultipleActiveResultSets=True;TrustServerCertificate=True"
   }
@@ -176,7 +176,7 @@ builder.Services.AddDbContext<ContactsAPIDbContext>(options => options.UseSqlSer
 ```
 
 *** Add Migrations
-```
+```cs
  dotnet ef migrations add InitTableCharacter
 ```
 
@@ -186,7 +186,7 @@ dotnet ef database update
 ```
 
 *** In CharacterService add 
-```
+```cs
 public CharacterService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
