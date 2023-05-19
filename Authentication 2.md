@@ -90,3 +90,40 @@ namespace DotNet.Controllers
     {
     ...
 ```
+* Continute 014 Testing Secured Methods with Swagger
+
+> First Add package
+```cs
+dotnet add package Swashbuckle.AspNetCore.Filters 
+```
+> Second configs in file ``program.cs``
+```cs
+using DotNet.Data.Repository;
+using DotNet.Data.Repository.Impl;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+//here
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.OpenApi.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetionString")));
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+// Changer here add 
+builder.Services.AddSwaggerGen(c => {
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme{
+        Description = """Standard Authorization header using the Bearer scheme. Example: "bearer {token}" """,
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+```
